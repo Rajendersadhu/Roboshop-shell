@@ -11,7 +11,7 @@ echo -e "\e[33mExtract Frontend Content\e[0m"
 cd /usr/share/nginx/html
 unzip /tmp/frontend.zip &>>/tmp/roboshop.log
 
-echo -e "\e{33mUpdate Frontend Configuration\e[0m"
+echo -e "\e[33mUpdate Frontend Configuration\e[0m"
 cp /home/centos/roboshop-shell/roboshop.conf /etc/nginx/default.d/roboshop.conf
 
 echo -e "\e[33mStarting Nginx Server\e[0m"
