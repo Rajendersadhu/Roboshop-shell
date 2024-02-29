@@ -29,3 +29,5 @@ echo -e "\e[33mInstall MongoDB Client\e[0m"
 dnf install mongodb-org-shell -y &>>/tmp/roboshop.log
 echo -e "\e[33mLoad Schema\e[0m"
 mongo --host mongodb-dev.sraji73.store </app/schema/catalogue.js &>>/tmp/roboshop.log
+
+## test
