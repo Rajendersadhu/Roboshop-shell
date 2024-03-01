@@ -23,9 +23,10 @@ echo -e "\e[33mStart the service\e[0m"
 systemctl enable shipping &>>/tmp/roboshop.log
 systemctl start shipping &>>/tmp/roboshop.log
 echo -e "\e[33m load the schema\e[0m"
-mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>/tmp/roboshop.log
+mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 </app/schema/shipping.sql
 echo -e "\e[33mrestart shipping service\e[0m"
 systemctl restart shipping &>>/tmp/roboshop.log
+
 
 
 
