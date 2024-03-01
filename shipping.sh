@@ -6,8 +6,9 @@ echo -e "\e[33mLets setup an app directory\e[0m"
 mkdir /app &>>/tmp/roboshop.log
 echo -e "\e[33mDownload the application\e[0m"
 curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shipping.zip &>>/tmp/roboshop.log
-cd /app &>>/tmp/roboshop.log
+
 echo -e "\e[33mExtract Shipping App\e[0m"
+cd /app &>>/tmp/roboshop.log
 unzip /tmp/shipping.zip &>>/tmp/roboshop.log
 cd /app &>>/tmp/roboshop.log
 echo -e "\e[33mDownload Application Dependencies\e[0m"
@@ -24,4 +25,6 @@ echo -e "\e[33m load the schema\e[0m"
 mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>/tmp/roboshop.log
 echo -e "\e[33mrestart shipping service\e[0m"
 systemctl restart shipping &>>/tmp/roboshop.log
+
+
 
