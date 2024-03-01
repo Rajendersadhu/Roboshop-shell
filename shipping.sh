@@ -10,8 +10,9 @@ curl -L -o /tmp/shipping.zip https://roboshop-artifacts.s3.amazonaws.com/shippin
 echo -e "\e[33mExtract Shipping App\e[0m"
 cd /app &>>/tmp/roboshop.log
 unzip /tmp/shipping.zip &>>/tmp/roboshop.log
-cd /app &>>/tmp/roboshop.log
+
 echo -e "\e[33mDownload Application Dependencies\e[0m"
+cd /app &>>/tmp/roboshop.log
 mvn clean package &>>/tmp/roboshop.log
 mv target/shipping-1.0.jar shipping.jar &>>/tmp/roboshop.log
 echo -e "\e[33mSetup SystemD Shipping Service\e[0m"
