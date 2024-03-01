@@ -24,3 +24,4 @@ echo -e "\e[33m load the schema\e[0m"
 mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < /app/schema/shipping.sql &>>/tmp/roboshop.log
 echo -e "\e[33mrestart shipping service\e[0m"
 systemctl restart shipping &>>/tmp/roboshop.log
+
