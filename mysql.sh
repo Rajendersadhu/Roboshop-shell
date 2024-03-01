@@ -9,5 +9,6 @@ systemctl enable mysqld &>>/tmp/roboshop.log
 systemctl start mysqld &>>/tmp/roboshop.log
 echo -e "\e[33mChange Default Root Passwd\e[0m"
 mysql_secure_installation --set-root-pass RoboShop@1 &>>/tmp/roboshop.log
-echo -e "\e[33Check the Mysql New Passwd\e[0m"
+echo -e "\e[33mCheck the Mysql New Passwd\e[0m"
 mysql -uroot -pRoboShop@1 &>>/tmp/roboshop.log
+
