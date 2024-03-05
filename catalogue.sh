@@ -1,8 +1,6 @@
+source common.sh
 component=catalogue
-color="\e[36m"
-nocolor="\e[0m"
-log_file="/tmp/roboshop.log"
-app_path="/app"
+
 
 echo -e "${color}Disable Nodejs Previous Version${nocolor}"
 dnf module disable nodejs -y &>>$log_file
