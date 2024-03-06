@@ -1,7 +1,35 @@
 color="\e[36m"
-nocolor="\e[0m"
-log_file="/tmp/roboshop.log"
-app_path="/app"
+nocolor="${nocolor}"
+log_file="$log_file"
+app_path="${app_path}"
+
+app_presetup() {
+   echo -e "${color}Add application User${nocolor}"
+   useradd roboshop &>>$log_file
+   
+   echo -e "${color}Lets setup an app directory${nocolor}"
+   rm -rf ${app_path} &>>$log_file
+   mkdir ${app_path} &>>$log_file
+
+   echo -e "${color}Download the application${nocolor}"
+   curl -L -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>$log_file
+
+    echo -e "${color}Extract $component App${nocolor}"
+    cd ${app_path} &>>$log_file
+    unzip /tmp/$component.zip &>>$log_file
+}
+
+
+systemd_setup() {
+    echo -e "${color}Setup SystemD $component Service${nocolor}"
+    cp /home/centos/roboshop-shell/$component.service /etc/systemd/system/$component.service &>>$log_file
+
+    echo -e "${color}Start the service${nocolor}"
+    systemctl daemon-reload &>>$log_file
+    systemctl enable $component &>>$log_file
+    systemctl restart $component &>>$log_file
+}
+
 
 nodejs() {
   echo -e "${color}Disable Nodejs Previous Version${nocolor}"
@@ -10,26 +38,16 @@ nodejs() {
   dnf module enable nodejs:18 -y &>>$log_file
   echo -e "${color}Install NodeJS${nocolor}"
   dnf install nodejs -y &>>$log_file
-  echo -e "${color}Add application User${nocolor}"
-  useradd roboshop &>>$log_file
-  echo -e "${color}Setup an App Directory${nocolor}"
-  mkdir ${app_path} &>>$log_file
-  echo -e "${color}Download Application Content${nocolor}"
-  curl -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>$log_file
-  cd ${app_path} &>>$log_file
-  echo -e "${color}Extract Application Content${nocolor}"
-  unzip /tmp/$component.zip &>>$log_file
-  cd ${app_path} &>>$log_file
+  
+  app_presetup
+
+
   echo -e "${color}Install Nodejs Dependencies${nocolor}"
   npm install &>>$log_file
-  echo -e "${color}Setup SystemD $component Service${nocolor}"
-  cp /home/centos/roboshop-shell/$component.service /etc/systemd/system/$component.service &>>$log_file
-  echo -e "${color}Load the Service${nocolor}"
-  systemctl daemon-reload &>>$log_file
-  echo -e "${color}Start $component Service${nocolor}"
-  systemctl enable $component &>>$log_file
-  systemctl restart $component &>>$log_file
+
+ systemd_setup
 }
+
 
 mongo_schema_setup() {
   echo -e "${color}Copy Mongodb repo File${nocolor}"
@@ -39,3 +57,33 @@ mongo_schema_setup() {
   echo -e "${color}Load Schema${nocolor}"
   mongo --host mongodb-dev.sraji73.store <${app_path}/schema/$component.js &>>$log_file
 }
+
+
+mysql_schema_setup() {
+  echo -e "${color}Install Mysql Client${nocolor}"
+  dnf install mysql -y &>>$log_file
+
+  echo -e "${color}load the schema${nocolor}"
+  mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < ${app_path}/schema/$component.sql &>>$log_file
+}
+
+
+
+maven() {
+  echo -e "${color}Install Maven${nocolor}"
+  dnf install maven -y &>>$log_file
+  
+  app_presetup
+  
+
+  echo -e "${color}Download Application Dependencies${nocolor}"
+  mvn clean package &>>$log_file
+  mv target/$component-1.0.jar $component.jar &>>$log_file
+
+  mysql_schema_setup
+
+ systemd_setup
+
+}
+
+
