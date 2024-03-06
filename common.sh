@@ -1,7 +1,7 @@
 color="\e[36m"
 nocolor="\e[0m"
 log_file="\tmp\roboshop.log"
-app_path="\app"
+app_path="/app"
 
 
 app_presetup() {
@@ -84,7 +84,6 @@ maven() {
   mysql_schema_setup
 
  systemd_setup
-
 }
 
 
