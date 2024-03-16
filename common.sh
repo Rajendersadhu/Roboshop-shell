@@ -7,34 +7,61 @@ app_path="/app"
 app_presetup() {
    echo -e "${color}Add application User${nocolor}"
    useradd roboshop &>>$log_file
-   echo $?
+     if [ $? -eq 0 ]; then
+      echo SUCCESS
+     else
+        echo FAILURE
+     fi
 
    echo -e "${color}Lets setup an app directory${nocolor}"
    rm -rf ${app_path} &>>$log_file
    mkdir ${app_path} &>>$log_file
-   echo $?
+     if [ $? -eq 0 ]; then
+      echo SUCCESS
+     else
+        echo FAILURE
+     fi
 
    echo -e "${color}Download the application${nocolor}"
    curl -L -o /tmp/$component.zip https://roboshop-artifacts.s3.amazonaws.com/$component.zip &>>$log_file
-   echo $?
+     if [ $? -eq 0 ]; then
+      echo SUCCESS
+     else
+        echo FAILURE
+     fi
 
     echo -e "${color}Extract $component App${nocolor}"
     cd ${app_path} &>>$log_file
     unzip /tmp/$component.zip &>>$log_file
-    echo $?
+      if [ $? -eq 0 ]; then
+       echo SUCCESS
+      else
+         echo FAILURE
+      fi
 }
 
 
 systemd_setup() {
     echo -e "${color}Setup SystemD $component Service${nocolor}"
     cp /home/centos/roboshop-shell/$component.service /etc/systemd/system/$component.service &>>$log_file
-    echo $?
+
+      if [ $? -eq 0 ]; then
+       echo SUCCESS
+      else
+         echo FAILURE
+      fi
 
     echo -e "${color}Start the service${nocolor}"
     systemctl daemon-reload &>>$log_file
     systemctl enable $component &>>$log_file
     systemctl restart $component &>>$log_file
-    echo $?
+
+    if [ $? -eq 0 ]; then
+     echo SUCCESS
+    else
+       echo FAILURE
+    fi
+
 }
 
 
@@ -95,18 +122,30 @@ maven() {
 python() {
   echo -e "${color}Install Python${nocolor}"
   dnf install python36 gcc python3-devel -y &>>$log_file
-  echo $?
+
+  if [ $? -eq 0 ]; then
+   echo SUCCESS
+  else
+     echo FAILURE
+  fi
 
   app_presetup
 
   echo -e "${color}Download Application Dependencies${nocolor}"
   cd /app &>>$log_file
   pip3.6 install -r requirements.txt &>>$log_file
-  echo $?
+
+  if [ $? -eq 0 ]; then
+   echo SUCCESS
+  else
+     echo FAILURE
+  fi
+
 
   systemd_setup
 
 
 }
+
 
 
