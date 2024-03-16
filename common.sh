@@ -102,6 +102,7 @@ python() {
   echo -e "${color}Download Application Dependencies${nocolor}"
   cd /app &>>$log_file
   pip3.6 install -r requirements.txt &>>$log_file
+  echo $?
 
   systemd_setup
 
