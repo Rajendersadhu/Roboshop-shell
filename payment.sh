@@ -1,5 +1,5 @@
 set -e
-ource common.sh
+source common.sh
 component=payment
 
 python
