@@ -103,7 +103,7 @@ mysql_schema_setup() {
    stat_check $?
 
   echo -e "${color}load the schema${nocolor}"
-  mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < ${app_path}/schema/$component.sql &>>$log_file
+  mysql -h mysql-dev.sraji73.store -uroot -p${mysql_root_password} </app/schema/${component}.sql &>>$log_file
    stat_check $?
 }
 
