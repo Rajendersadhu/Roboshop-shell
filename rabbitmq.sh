@@ -1,14 +1,14 @@
-echo -e "\e[33mConfigure Erlang Repos\e[0m"
-curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>/tmp/roboshop.log
-echo -e "\e[33mConfigure RabbitMQ Repos\e[0m"
-curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>/tmp/roboshop.log
-echo -e "\e[33mInstall RabbitMQ\e[0m"
-dnf install rabbitmq-server -y &>>/tmp/roboshop.log
-echo -e "\e[33mStart RabbitMQ Service\e[0m"
-systemctl enable rabbitmq-server &>>/tmp/roboshop.log
-systemctl restart rabbitmq-server &>>/tmp/roboshop.log
-echo -e "\e[33mAdd RabbitMQ Application User\e[0m"
-rabbitmqctl add_user roboshop roboshop123 &>>/tmp/roboshop.log
-rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>/tmp/roboshop.log
+echo -e "${color}Configure Erlang Repos${nocolor}"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/erlang/script.rpm.sh | bash &>>$log_file
+echo -e "${color}Configure RabbitMQ Repos${nocolor}"
+curl -s https://packagecloud.io/install/repositories/rabbitmq/rabbitmq-server/script.rpm.sh | bash &>>$log_file
+echo -e "${color}Install RabbitMQ${nocolor}"
+dnf install rabbitmq-server -y &>>$log_file
+echo -e "${color}Start RabbitMQ Service${nocolor}"
+systemctl enable rabbitmq-server &>>$log_file
+systemctl restart rabbitmq-server &>>$log_file
+echo -e "${color}Add RabbitMQ Application User${nocolor}"
+rabbitmqctl add_user roboshop roboshop123 &>>$log_file
+rabbitmqctl set_permissions -p / roboshop ".*" ".*" ".*" &>>$log_file
 
 
