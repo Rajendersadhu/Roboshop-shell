@@ -8,6 +8,5 @@ if [ -z "$roboshop_app_password" ]; then
   exit 1
 fi
 
-
 python
 
