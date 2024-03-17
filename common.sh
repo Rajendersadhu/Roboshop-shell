@@ -63,8 +63,10 @@ systemd_setup() {
 nodejs() {
   echo -e "${color}Disable Nodejs Previous Version${nocolor}"
   dnf module disable nodejs -y &>>$log_file
+  stat_check $?
   echo -e "${color}Enable Nodejs 18 Version${nocolor}"
   dnf module enable nodejs:18 -y &>>$log_file
+  stat_check $?
   echo -e "${color}Install NodeJS${nocolor}"
   dnf install nodejs -y &>>$log_file
    stat_check $?
