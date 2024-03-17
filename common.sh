@@ -67,33 +67,42 @@ nodejs() {
   dnf module enable nodejs:18 -y &>>$log_file
   echo -e "${color}Install NodeJS${nocolor}"
   dnf install nodejs -y &>>$log_file
+   stat_check $?
   
   app_presetup
 
 
+
   echo -e "${color}Install Nodejs Dependencies${nocolor}"
   npm install &>>$log_file
+   stat_check $?
 
  systemd_setup
+
 }
 
 
 mongo_schema_setup() {
   echo -e "${color}Copy Mongodb repo File${nocolor}"
   cp /home/centos/roboshop-shell/mongodb.repo /etc/yum.repos.d/mongodb.repo &>>$log_file
+   stat_check $?
   echo -e "${color}Install MongoDB Client${nocolor}"
   dnf install mongodb-org-shell -y &>>$log_file
+   stat_check $?
   echo -e "${color}Load Schema${nocolor}"
   mongo --host mongodb-dev.sraji73.store <${app_path}/schema/$component.js &>>$log_file
+   stat_check $?
 }
 
 
 mysql_schema_setup() {
   echo -e "${color}Install Mysql Client${nocolor}"
   dnf install mysql -y &>>$log_file
+   stat_check $?
 
   echo -e "${color}load the schema${nocolor}"
   mysql -h mysql-dev.sraji73.store -uroot -pRoboShop@1 < ${app_path}/schema/$component.sql &>>$log_file
+   stat_check $?
 }
 
 
@@ -101,6 +110,7 @@ mysql_schema_setup() {
 maven() {
   echo -e "${color}Install Maven${nocolor}"
   dnf install maven -y &>>$log_file
+   stat_check $?
   
   app_presetup
   
@@ -108,8 +118,10 @@ maven() {
   echo -e "${color}Download Application Dependencies${nocolor}"
   mvn clean package &>>$log_file
   mv target/$component-1.0.jar $component.jar &>>$log_file
+   stat_check $?
 
   mysql_schema_setup
+
 
  systemd_setup
 }
