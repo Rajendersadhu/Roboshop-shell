@@ -18,9 +18,5 @@ systemctl start mysqld &>>$log_file
 stat_check $?
 
 echo -e "${color}Change Default Root Passwd${nocolor}"
-mysql_secure_installation --set-root-pass RoboShop@1 &>>$log_file
-stat_check $?
-
-echo -e "${color}Check the Mysql New Passwd${nocolor}"
-mysql -uroot -pRoboShop@1 &>>$log_file
+mysql_secure_installation --set-root-pass $1 &>>$log_file
 stat_check $?
